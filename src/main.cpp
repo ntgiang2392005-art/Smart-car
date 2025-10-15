@@ -20,12 +20,12 @@ String last = "";
 
 const char* ssid = "VanTuan";
 const char* password = "11111111";
-const char* mqtt_server = "broker.emqx.io"; // ✅ sửa đúng tên miền
+const char* mqtt_server = "broker.emqx.io"; 
 
 WiFiClient espClient;
 PubSubClient client(espClient);
 
-// ==== Điều khiển động cơ ====
+
 void W() {
   digitalWrite(IN1, HIGH);
   digitalWrite(IN2, LOW);
@@ -57,14 +57,14 @@ void STOP() {
   digitalWrite(IN4, LOW);
 }
 
-// ==== Đo khoảng cách ====
+
 float kc() {
   digitalWrite(TRIG, LOW);
   delayMicroseconds(2);
   digitalWrite(TRIG, HIGH);
   delayMicroseconds(10);
   digitalWrite(TRIG, LOW);
-  t = pulseIn(ECHO, HIGH, 30000); // ✅ tăng timeout
+  t = pulseIn(ECHO, HIGH, 30000); 
   float distance = (0.0343 * t) / 2;
   return distance;
 }
@@ -87,7 +87,7 @@ float kc_d() {
   return TEMP;
 }
 
-// ==== MQTT Callback ====
+
 void callback(char* topic, byte* payload, unsigned int length) {
   String message = "";
   for (int i = 0; i < length; i++) message += (char)payload[i];
@@ -104,7 +104,7 @@ void callback(char* topic, byte* payload, unsigned int length) {
   }
 }
 
-// ==== Kết nối lại MQTT ====
+
 void reconnect() {
   while (!client.connected()) {
     Serial.print("Kết nối MQTT...");
@@ -119,7 +119,7 @@ void reconnect() {
   }
 }
 
-// ==== SETUP ====
+
 void setup() {
   Serial.begin(115200);
 
@@ -146,7 +146,7 @@ void setup() {
   client.setCallback(callback);
 }
 
-// ==== LOOP ====
+
 void loop() {
   if (!client.connected()) reconnect();
   client.loop();
@@ -172,7 +172,7 @@ void loop() {
     D(); delay(700); now = "D";
   }
 
-  // Gửi MQTT khi trạng thái thay đổi
+  
   if (now != last) {
     last = now;
     if (now == "W") client.publish("esp32test1", "XE ĐANG ĐI THẲNG");
